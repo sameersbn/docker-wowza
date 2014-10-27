@@ -26,9 +26,9 @@ rm -rf WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin WowzaStreamingEngine-${WOWZ
 # move supervisord.log file to /var/log/wowza/supervisor/
 sed 's|^logfile=.*|logfile=/var/log/wowza/supervisor/supervisord.log ;|' -i /etc/supervisor/supervisord.conf
 
-# symlink log -> /var/log/wowza/wowza
-rm -rf log
-ln -sf /var/log/wowza/wowza log
+# symlink /usr/local/WowzaStreamingEngine/logs -> /var/log/wowza/wowza
+rm -rf /usr/local/WowzaStreamingEngine/logs
+ln -sf /var/log/wowza/wowza /usr/local/WowzaStreamingEngine/logs
 
 # configure supervisord to start wowza streaming engine
 cat > /etc/supervisor/conf.d/wowza.conf <<EOF
