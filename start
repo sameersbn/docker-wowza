@@ -1,0 +1,46 @@
+#!/bin/bash
+set -e
+
+WOWZA_KEY=${WOWZA_KEY:-}
+
+# create configuration directory
+mkdir -p /data/conf
+
+# setup container for first run
+if [ ! -f "/data/.firstrun" ]; then
+  echo "Configuring container for first run..."
+  if [ ! -d "/data/conf/wowza" ]; then
+    cp -a /usr/local/WowzaStreamingEngine/conf /data/conf/wowza
+  fi
+  if [ ! -d "/data/conf/manager" ]; then
+    cp -a /usr/local/WowzaStreamingEngine/manager/conf /data/conf/manager
+  fi
+  touch "/data/.firstrun"
+fi
+
+# setup config symlinks
+rm -rf /usr/local/WowzaStreamingEngine/conf /usr/local/WowzaStreamingEngine/manager/conf
+ln -sf /data/conf/wowza /usr/local/WowzaStreamingEngine/conf
+ln -sf /data/conf/manager /usr/local/WowzaStreamingEngine/manager/conf
+
+# populate /var/log/wowza
+mkdir -m 0755 -p /var/log/wowza/supervisor   && chown -R root:root /var/log/wowza/supervisor
+mkdir -m 0755 -p /var/log/wowza/wowza        && chown -R root:root /var/log/wowza/wowza
+
+#
+if [ -z "${WOWZA_KEY}" -a ! -f "/usr/local/WowzaStreamingEngine/conf/Server.license" ]; then
+  echo "ERROR: "
+  echo "  Please specify your Wowza Streaming Engine license key using"
+  echo "  the WOWZA_KEY environment variable."
+  echo "  Cannot continue without a license. Aborting..."
+  exit 1
+fi
+
+# install wowza license
+if [ -n "${WOWZA_KEY}" ]; then
+  echo "Installing Wowza Streaming Engine license..."
+  echo "${WOWZA_KEY}" > /usr/local/WowzaStreamingEngine/conf/Server.license
+fi
+
+# start supervisord
+exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
