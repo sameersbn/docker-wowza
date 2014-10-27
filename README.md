@@ -15,7 +15,7 @@
 
 Dockerfile to build a [Wowza Streaming Engine](http://www.wowza.com/products/streaming-engine) server.
 
-**NOTE**: By using this image you are agreeing to comply with the [Wowza License](Wowza_EULA.txt)
+**NOTE**: By using this image you are agreeing to comply with the [Wowza EULA](Wowza_EULA.txt)
 
 ## Version
 
