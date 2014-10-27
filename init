@@ -42,5 +42,38 @@ if [ -n "${WOWZA_KEY}" ]; then
   echo "${WOWZA_KEY}" > /usr/local/WowzaStreamingEngine/conf/Server.license
 fi
 
-# start supervisord
-exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+start () {
+  # start supervisord
+  exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+}
+
+help () {
+  echo "Available options:"
+  echo " start      - Starts the wowza server (default)"
+  echo " help       - Displays the help"
+  echo " [command]  - Execute the specified linux command eg. bash."
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  help)
+    help
+    ;;
+  *)
+    if [ -x $1 ]; then
+      $1
+    else
+      prog=$(which $1)
+      if [ -n "${prog}" ] ; then
+        shift 1
+        $prog $@
+      else
+        help
+      fi
+    fi
+    ;;
+esac
+
+exit 0

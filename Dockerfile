@@ -20,4 +20,5 @@ EXPOSE 8088
 VOLUME ["/data"]
 VOLUME ["/var/log/wowza"]
 
-CMD ["/init"]
+ENTRYPOINT ["/init"]
+CMD ["start"]
