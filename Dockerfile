@@ -9,8 +9,8 @@ COPY assets/install /app/install
 RUN chmod 755 /app/install
 RUN /app/install
 
-ADD init /init
-RUN chmod 755 /init
+COPY assets/init /app/init
+RUN chmod 755 /app/init
 
 EXPOSE 1935
 EXPOSE 8086
@@ -20,5 +20,5 @@ EXPOSE 8088
 VOLUME ["/data"]
 VOLUME ["/var/log/wowza"]
 
-ENTRYPOINT ["/init"]
+ENTRYPOINT ["/app/init"]
 CMD ["start"]
