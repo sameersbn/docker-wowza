@@ -9,8 +9,8 @@ COPY install /install
 RUN chmod 755 /install
 RUN /install
 
-ADD start /start
-RUN chmod 755 /start
+ADD init /init
+RUN chmod 755 /init
 
 EXPOSE 1935
 EXPOSE 8086
@@ -20,4 +20,4 @@ EXPOSE 8088
 VOLUME ["/data"]
 VOLUME ["/var/log/wowza"]
 
-CMD ["/start"]
+CMD ["/init"]
