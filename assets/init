@@ -15,6 +15,9 @@ if [ ! -f "/data/.firstrun" ]; then
   if [ ! -d "/data/conf/manager" ]; then
     cp -a /usr/local/WowzaStreamingEngine/manager/conf /data/conf/manager
   fi
+  if [ ! -d "/data/transcoder" ]; then
+    cp -a /usr/local/WowzaStreamingEngine/transcoder /data/transcoder
+  fi
   touch "/data/.firstrun"
 fi
 
@@ -24,6 +27,9 @@ ln -sf /data/conf/wowza /usr/local/WowzaStreamingEngine/conf
 
 rm -rf /usr/local/WowzaStreamingEngine/manager/conf
 ln -sf /data/conf/manager /usr/local/WowzaStreamingEngine/manager/conf
+
+rm -rf /usr/local/WowzaStreamingEngine/transcoder
+ln -sf /data/transcoder /usr/local/WowzaStreamingEngine/transcoder
 
 # populate /var/log/wowza
 mkdir -m 0755 -p /var/log/wowza/supervisor   && chown -R root:root /var/log/wowza/supervisor
