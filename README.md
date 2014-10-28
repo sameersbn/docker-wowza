@@ -123,7 +123,7 @@ If you are using an older version of docker, you can use the [nsenter](http://ma
 
 Some linux distros (e.g. ubuntu) use older versions of the util-linux which do not include the `nsenter` tool. To get around this @jpetazzo has created a nice docker image that allows you to install the `nsenter` utility and a helper script named `docker-enter` on these distros.
 
-Install `nsenter` execute the following command on your host
+To install `nsenter` execute the following command on your host
 
 ```bash
 docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
