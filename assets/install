@@ -30,6 +30,10 @@ sed 's|^logfile=.*|logfile=/var/log/wowza/supervisor/supervisord.log ;|' -i /etc
 rm -rf /usr/local/WowzaStreamingEngine/logs
 ln -sf /var/log/wowza/wowza /usr/local/WowzaStreamingEngine/logs
 
+# symlink /usr/local/WowzaStreamingEngine/manager/logs -> /var/log/wowza/manager
+rm -rf /usr/local/WowzaStreamingEngine/manager/logs
+ln -sf /var/log/wowza/manager /usr/local/WowzaStreamingEngine/manager/logs
+
 # configure supervisord to start wowza streaming engine
 cat > /etc/supervisor/conf.d/wowza.conf <<EOF
 [program:wowza]
@@ -85,6 +89,19 @@ EOF
 # configure wowza log rotation
 cat > /etc/logrotate.d/wowza <<EOF
 /var/log/wowza/wowza/*.log {
+  weekly
+  missingok
+  rotate 52
+  compress
+  delaycompress
+  notifempty
+  copytruncate
+}
+EOF
+
+# configure manager log rotation
+cat > /etc/logrotate.d/wowza <<EOF
+/var/log/wowza/manager/*.log {
   weekly
   missingok
   rotate 52

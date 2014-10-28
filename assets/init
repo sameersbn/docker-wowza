@@ -18,9 +18,11 @@ if [ ! -f "/data/.firstrun" ]; then
   touch "/data/.firstrun"
 fi
 
-# setup config symlinks
-rm -rf /usr/local/WowzaStreamingEngine/conf /usr/local/WowzaStreamingEngine/manager/conf
+# setup symlinks
+rm -rf /usr/local/WowzaStreamingEngine/conf
 ln -sf /data/conf/wowza /usr/local/WowzaStreamingEngine/conf
+
+rm -rf /usr/local/WowzaStreamingEngine/manager/conf
 ln -sf /data/conf/manager /usr/local/WowzaStreamingEngine/manager/conf
 
 # populate /var/log/wowza
