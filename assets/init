@@ -24,6 +24,9 @@ if [ ! -f "/data/.firstrun" ]; then
   if [ ! -d "/data/backup" ]; then
     cp -a /usr/local/WowzaStreamingEngine/backup /data/backup
   fi
+  if [ ! -d "/data/stats" ]; then
+    mkdir -p /data/stats
+  fi
   touch "/data/.firstrun"
 fi
 
@@ -42,6 +45,9 @@ ln -sf /data/content /usr/local/WowzaStreamingEngine/content
 
 rm -rf /usr/local/WowzaStreamingEngine/backup
 ln -sf /data/backup /usr/local/WowzaStreamingEngine/backup
+
+rm -rf /usr/local/WowzaStreamingEngine/stats
+ln -sf /data/stats /usr/local/WowzaStreamingEngine/stats
 
 # populate /var/log/wowza
 mkdir -m 0755 -p /var/log/wowza/supervisor   && chown -R root:root /var/log/wowza/supervisor
