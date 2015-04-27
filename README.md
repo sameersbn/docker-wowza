@@ -59,35 +59,25 @@ In your issue report please make sure you provide the following information:
 
 # Installation
 
-Pull the the image from the docker index. This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
+Due to issues surrounding the unauthorized redistribution of wowza, I have decided to remove the image from the docker hub. As a result you need to build the image locally if you wish to use it.
 
-```bash
-docker pull sameersbn/wowza:4.1.2
-```
-
-You can also pull the `latest` tag which is built from the repository *HEAD*
-
-```bash
-docker pull sameersbn/wowza:latest
-```
-
-Alternately you can build the image locally.
+I would like to reiterate that by using this image you are agreeing to comply with the [Wowza EULA](http://www.wowza.com/resources/WowzaStreamingEngine-4.0.0_LicenseAgreement.pdf)
 
 ```bash
 git clone https://github.com/sameersbn/docker-wowza.git
 cd docker-wowza
-docker build --tag="$USER/wowza" .
+docker build --tag="$USER/wowza:latest" .
 ```
 
 # Quick Start
 
-Before you can start using this image you need to acquire a license for the Wowza Streaming Engine. If you do not have one, you can [request a free trial license](http://www.wowza.com/pricing/trial).
+Before you can start using this image you need to acquire a license for the Wowza Streaming Engine. If you do not have one, you can [request a free trial license](http://www.wowza.com/pricing/trial) or purchase a license from wowza.
 
 ```bash
 docker run --name='wowza' -it --rm \
   -e 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
   -p 1935:1935 -p 8086:8086 -p 8087:8087 -p 8088:8088 \
-  sameersbn/wowza:4.1.2
+  $USER/wowza:latest
 ```
 
 Point your browser to `http://localhost:8088` and login using the default username and password:
@@ -106,7 +96,7 @@ docker run --name='wowza' -it --rm \
   -e 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
   -p 1935:1935 -p 8086:8086 -p 8087:8087 -p 8088:8088 \
   -v /opt/wowza:/data \
-  sameersbn/wowza:4.1.2
+  $USER/wowza:latest
 ```
 
 Upon the first run the image will copy all configurations at this location allowing users to manually edit the configurations if required.
@@ -139,25 +129,19 @@ For more information refer https://github.com/jpetazzo/nsenter
 
 # Upgrading
 
-To upgrade to newer releases, simply follow this 3 step upgrade procedure.
+To upgrade the image, you need to rebuild the image from the latest source and do the following.
 
-- **Step 1**: Pull the latest version from the docker index
-
-```bash
-docker pull sameersbn/wowza:4.1.2
-```
-
-- **Step 2**: Stop and remove the running container
+- **Step 1**: Stop and remove the running container
 
 ```bash
 docker stop wowza
 docker rm wowza
 ```
 
-- **Step 3**: Start the updated image
+- **Step 2**: Start the updated image
 
 ```bash
-docker run --name=wowza -d [OPTIONS] sameersbn/wowza:4.1.2
+docker run --name=wowza -d [OPTIONS] $USER/wowza:latest
 ```
 
 # References
