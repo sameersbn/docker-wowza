@@ -1,16 +1,8 @@
 FROM sameersbn/ubuntu:14.04.20150220
-MAINTAINER sameer@damagehead.com
-
-RUN apt-get update -qq
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libfuse-dev libcurl4-openssl-dev libxml2-dev mime-support automake libtool wget tar
-
-RUN wget https://github.com/s3fs-fuse/s3fs-fuse/archive/v1.78.tar.gz -O /usr/src/v1.78.tar.gz
-
-RUN tar xvz -C /usr/src -f /usr/src/v1.78.tar.gz
-RUN cd /usr/src/s3fs-fuse-1.78 && ./autogen.sh && ./configure --prefix=/usr && make && make install
+MAINTAINER emili@streamgps.com
 
 RUN apt-get update \
- && apt-get install -y supervisor logrotate openjdk-7-jre \
+ && apt-get install -y supervisor logrotate openjdk-7-jre build-essential libfuse-dev libcurl4-openssl-dev libxml2-dev mime-support automake libtool wget tar unzip \
  && rm -rf /var/lib/apt/lists/* # 20150220
 
 COPY assets/install /app/install
@@ -19,6 +11,14 @@ RUN /app/install
 
 COPY assets/init /app/init
 RUN chmod 755 /app/init
+
+RUN wget https://github.com/s3fs-fuse/s3fs-fuse/archive/master.zip -O /usr/src/master.zip
+
+RUN unzip /usr/src/master.zip -d /usr/src
+RUN cd /usr/src/s3fs-fuse-master && ./autogen.sh && ./configure --prefix=/usr && make && make install
+
+RUN mkdir /mnt/s3
+RUN chmod 755 /mnt/s3
 
 EXPOSE 1935
 EXPOSE 8086

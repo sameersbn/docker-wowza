@@ -34,6 +34,19 @@ ln -sf /var/log/wowza/wowza /usr/local/WowzaStreamingEngine/logs
 rm -rf /usr/local/WowzaStreamingEngine/manager/logs
 ln -sf /var/log/wowza/manager /usr/local/WowzaStreamingEngine/manager/logs
 
+# configure supervisord to start s3fs
+cat > /etc/supervisor/conf.d/s3fs.conf <<EOF
+[program:s3fs]
+priority=9
+directory=/usr/bin
+command=/data/conf/startup-s3fs.sh
+user=root
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/wowza/supervisor/%(program_name)s.log
+stderr_logfile=/var/log/wowza/supervisor/%(program_name)s.log
+EOF
+
 # configure supervisord to start wowza streaming engine
 cat > /etc/supervisor/conf.d/wowza.conf <<EOF
 [program:wowza]

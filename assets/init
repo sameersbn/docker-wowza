@@ -5,7 +5,6 @@ WOWZA_KEY=${WOWZA_KEY:-}
 
 # create configuration directory
 mkdir -p /data/conf
-
 # setup container for first run
 if [ ! -f "/data/.firstrun" ]; then
   echo "Configuring container for first run..."
@@ -29,10 +28,14 @@ if [ ! -f "/data/.firstrun" ]; then
   fi
   touch "/data/.firstrun"
 fi
-
+cp /data/lib/* /usr/local/WowzaStreamingEngine/lib
+chmod 775 /usr/local/WowzaStreamingEngine/lib/*
 # setup symlinks
 rm -rf /usr/local/WowzaStreamingEngine/conf
 ln -sf /data/conf/wowza /usr/local/WowzaStreamingEngine/conf
+
+rm -rf /usr/local/WowzaStreamingEngine/applications
+ln -sf /data/applications /usr/local/WowzaStreamingEngine/applications
 
 rm -rf /usr/local/WowzaStreamingEngine/manager/conf
 ln -sf /data/conf/manager /usr/local/WowzaStreamingEngine/manager/conf
@@ -48,11 +51,13 @@ ln -sf /data/backup /usr/local/WowzaStreamingEngine/backup
 
 rm -rf /usr/local/WowzaStreamingEngine/stats
 ln -sf /data/stats /usr/local/WowzaStreamingEngine/stats
+  mkdir -m 0755 -p /usr/local/WowzaStreamingEngine/stats
+
 
 # populate /var/log/wowza
 mkdir -m 0755 -p /var/log/wowza/supervisor   && chown -R root:root /var/log/wowza/supervisor
 mkdir -m 0755 -p /var/log/wowza/wowza        && chown -R root:root /var/log/wowza/wowza
-
+chmod 740 /data/conf/startup-s3fs.sh
 #
 if [ -z "${WOWZA_KEY}" -a ! -f "/usr/local/WowzaStreamingEngine/conf/Server.license" ]; then
   echo "ERROR: "
