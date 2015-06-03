@@ -73,9 +73,7 @@ docker build --tag="$USER/wowza:latest" .
 
 # Quick Start
 
-Before you can start using this image you need to acquire a valid license
-from Wowza Media Systems for the Wowza Streaming Engine software. If you
-do not have one, you can [request a free trial license](http://www.wowza.com/pricing/trial) or purchase a license from Wowza Media Systems.
+Before you can start using this image you need to acquire a valid license from Wowza Media Systems for the Wowza Streaming Engine software. If you do not have one, you can [request a free trial license](http://www.wowza.com/pricing/trial) or purchase a license from Wowza Media Systems.
 
 ```bash
 docker run --name='wowza' -it --rm \
