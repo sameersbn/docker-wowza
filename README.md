@@ -17,7 +17,7 @@ Dockerfile to build a [Wowza Streaming Engine](http://www.wowza.com/products/str
 
 This Dockerfile is not provided by or endorsed by Wowza Media Systems.
 
-**NOTE**: By using this image you are agreeing to comply with the [Wowza EULA](http://www.wowza.com/resources/WowzaStreamingEngine-4.0.0_LicenseAgreement.pdf)
+**NOTE**: By using this image you are agreeing to comply with the [Wowza EULA](https://www.wowza.com/legal)
 
 ## Version
 
