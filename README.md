@@ -15,6 +15,8 @@
 
 Dockerfile to build a [Wowza Streaming Engine](http://www.wowza.com/products/streaming-engine) server.
 
+This Dockerfile is not provided by or endorsed by Wowza Media Systems.
+
 **NOTE**: By using this image you are agreeing to comply with the [Wowza EULA](http://www.wowza.com/resources/WowzaStreamingEngine-4.0.0_LicenseAgreement.pdf)
 
 ## Version
@@ -71,7 +73,9 @@ docker build --tag="$USER/wowza:latest" .
 
 # Quick Start
 
-Before you can start using this image you need to acquire a license for the Wowza Streaming Engine. If you do not have one, you can [request a free trial license](http://www.wowza.com/pricing/trial) or purchase a license from wowza.
+Before you can start using this image you need to acquire a valid license
+from Wowza Media Systems for the Wowza Streaming Engine software. If you
+do not have one, you can [request a free trial license](http://www.wowza.com/pricing/trial) or purchase a license from Wowza Media Systems.
 
 ```bash
 docker run --name='wowza' -it --rm \
