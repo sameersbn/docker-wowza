@@ -1,9 +1,9 @@
-FROM sameersbn/ubuntu:14.04.20150613
+FROM sameersbn/ubuntu:14.04.20150712
 MAINTAINER sameer@damagehead.com
 
 RUN apt-get update \
  && apt-get install -y supervisor logrotate openjdk-7-jre \
- && rm -rf /var/lib/apt/lists/* # 20150613
+ && rm -rf /var/lib/apt/lists/* # 20150712
 
 COPY assets/install /app/install
 RUN chmod 755 /app/install
