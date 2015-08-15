@@ -74,7 +74,7 @@ docker run --name wowza -d --restart=always \
   sameersbn/wowza:4.1.2-1
 ```
 
-**The `-env WOWZA_ACCEPT_LICENSE=yes` parameter in the above command indicates that you agree to the Wowza EULA.**
+**The `--env WOWZA_ACCEPT_LICENSE=yes` parameter in the above command indicates that you agree to the Wowza EULA.**
 
 *Alternatively, you can use the sample [docker-compose.yml](docker-compose.yml) file to start the container using [Docker Compose](https://docs.docker.com/compose/)*
 
