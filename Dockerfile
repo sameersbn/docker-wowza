@@ -12,10 +12,7 @@ RUN /app/install
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
 
-EXPOSE 1935
-EXPOSE 8086
-EXPOSE 8087
-EXPOSE 8088
+EXPOSE 1935/tcp 8086/tcp 8087/tcp 8088/tcp
 
 VOLUME ["/data"]
 VOLUME ["/var/log/wowza"]
