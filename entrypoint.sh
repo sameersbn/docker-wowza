@@ -29,19 +29,19 @@ initialize_data_dir() {
   chmod 0755 ${WOWZA_DATA_DIR}
   chown -R root:root ${WOWZA_DATA_DIR}
 
-  if [ ! -f "${WOWZA_DATA_DIR}/.firstrun" ]; then
+  if [[ ! -f ${WOWZA_DATA_DIR}/.firstrun ]]; then
     echo "Initializing data volume..."
     mkdir -p ${WOWZA_DATA_DIR}/conf
-    [ ! -d "${WOWZA_DATA_DIR}/conf/wowza" ]   && cp -a /usr/local/WowzaStreamingEngine/conf ${WOWZA_DATA_DIR}/conf/wowza
-    [ ! -d "${WOWZA_DATA_DIR}/conf/manager" ] && cp -a /usr/local/WowzaStreamingEngine/manager/conf ${WOWZA_DATA_DIR}/conf/manager
-    [ ! -d "${WOWZA_DATA_DIR}/transcoder" ]   && cp -a /usr/local/WowzaStreamingEngine/transcoder ${WOWZA_DATA_DIR}/transcoder
-    [ ! -d "${WOWZA_DATA_DIR}/content" ]      && cp -a /usr/local/WowzaStreamingEngine/content ${WOWZA_DATA_DIR}/content
-    [ ! -d "${WOWZA_DATA_DIR}/backup" ]       && cp -a /usr/local/WowzaStreamingEngine/backup ${WOWZA_DATA_DIR}/backup
-    [ ! -d "${WOWZA_DATA_DIR}/stats" ]        && mkdir -p ${WOWZA_DATA_DIR}/stats
-    touch "${WOWZA_DATA_DIR}/.firstrun"
+    [[ ! -d ${WOWZA_DATA_DIR}/conf/wowza ]]   && cp -a /usr/local/WowzaStreamingEngine/conf ${WOWZA_DATA_DIR}/conf/wowza
+    [[ ! -d ${WOWZA_DATA_DIR}/conf/manager ]] && cp -a /usr/local/WowzaStreamingEngine/manager/conf ${WOWZA_DATA_DIR}/conf/manager
+    [[ ! -d ${WOWZA_DATA_DIR}/transcoder ]]   && cp -a /usr/local/WowzaStreamingEngine/transcoder ${WOWZA_DATA_DIR}/transcoder
+    [[ ! -d ${WOWZA_DATA_DIR}/content ]]      && cp -a /usr/local/WowzaStreamingEngine/content ${WOWZA_DATA_DIR}/content
+    [[ ! -d ${WOWZA_DATA_DIR}/backup ]]       && cp -a /usr/local/WowzaStreamingEngine/backup ${WOWZA_DATA_DIR}/backup
+    [[ ! -d ${WOWZA_DATA_DIR}/stats ]]        && mkdir -p ${WOWZA_DATA_DIR}/stats
+    touch ${WOWZA_DATA_DIR}/.firstrun
   fi
 
-  if [ -n "${WOWZA_KEY}" ]; then
+  if [[ -n ${WOWZA_KEY} ]]; then
     echo "Installing Wowza Streaming Engine license..."
     echo "${WOWZA_KEY}" > /usr/local/WowzaStreamingEngine/conf/Server.license
   fi
@@ -61,7 +61,7 @@ initialize_log_dir() {
   chown -R root:root ${WOWZA_LOG_DIR}/manager
 }
 
-if [ -z "${WOWZA_KEY}" -a ! -f "/usr/local/WowzaStreamingEngine/conf/Server.license" ]; then
+if [[ -z ${WOWZA_KEY} && ! -f /usr/local/WowzaStreamingEngine/conf/Server.license ]]; then
   echo "ERROR: "
   echo "  Please specify your Wowza Streaming Engine license key using"
   echo "  the WOWZA_KEY environment variable."
@@ -73,8 +73,8 @@ initialize_data_dir
 initialize_log_dir
 rewire_wowza
 
-if [ -z "${1}" ]; then
-  if [ "${WOWZA_ACCEPT_LICENSE}" != "yes" ]; then
+if [[ -z ${1} ]]; then
+  if [[ ${WOWZA_ACCEPT_LICENSE} != yes ]]; then
     echo "ERROR: "
     echo "  Please accept the Wowza EULA by specifying 'WOWZA_ACCEPT_LICENSE=yes'"
     echo "  Visit https://www.wowza.com/legal to read the Licensing Terms."
