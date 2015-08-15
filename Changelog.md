@@ -1,5 +1,9 @@
 # Changelog
 
+**latest**
+- moved data dir to `/var/lib/wowza`
+- added `WOWZA_ACCEPT_LICENSE` environment variable
+
 **4.1.2**
 - wowza: upgrade to 4.1.2
 
