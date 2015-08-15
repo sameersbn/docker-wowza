@@ -3,58 +3,64 @@ set -e
 
 WOWZA_KEY=${WOWZA_KEY:-}
 
-# create configuration directory
-mkdir -p ${WOWZA_DATA_DIR}/conf
+rewire_wowza() {
+  echo "Preparing Wowza..."
+  rm -rf /usr/local/WowzaStreamingEngine/conf
+  ln -sf ${WOWZA_DATA_DIR}/conf/wowza /usr/local/WowzaStreamingEngine/conf
 
-# setup container for first run
-if [ ! -f "${WOWZA_DATA_DIR}/.firstrun" ]; then
-  echo "Configuring container for first run..."
-  if [ ! -d "${WOWZA_DATA_DIR}/conf/wowza" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/conf ${WOWZA_DATA_DIR}/conf/wowza
+  rm -rf /usr/local/WowzaStreamingEngine/manager/conf
+  ln -sf ${WOWZA_DATA_DIR}/conf/manager /usr/local/WowzaStreamingEngine/manager/conf
+
+  rm -rf /usr/local/WowzaStreamingEngine/transcoder
+  ln -sf ${WOWZA_DATA_DIR}/transcoder /usr/local/WowzaStreamingEngine/transcoder
+
+  rm -rf /usr/local/WowzaStreamingEngine/content
+  ln -sf ${WOWZA_DATA_DIR}/content /usr/local/WowzaStreamingEngine/content
+
+  rm -rf /usr/local/WowzaStreamingEngine/backup
+  ln -sf ${WOWZA_DATA_DIR}/backup /usr/local/WowzaStreamingEngine/backup
+
+  rm -rf /usr/local/WowzaStreamingEngine/stats
+  ln -sf ${WOWZA_DATA_DIR}/stats /usr/local/WowzaStreamingEngine/stats
+}
+
+initialize_data_dir() {
+  mkdir -p ${WOWZA_DATA_DIR}
+  chmod 0755 ${WOWZA_DATA_DIR}
+  chown -R root:root ${WOWZA_DATA_DIR}
+
+  if [ ! -f "${WOWZA_DATA_DIR}/.firstrun" ]; then
+    echo "Initializing data volume..."
+    mkdir -p ${WOWZA_DATA_DIR}/conf
+    [ ! -d "${WOWZA_DATA_DIR}/conf/wowza" ]   && cp -a /usr/local/WowzaStreamingEngine/conf ${WOWZA_DATA_DIR}/conf/wowza
+    [ ! -d "${WOWZA_DATA_DIR}/conf/manager" ] && cp -a /usr/local/WowzaStreamingEngine/manager/conf ${WOWZA_DATA_DIR}/conf/manager
+    [ ! -d "${WOWZA_DATA_DIR}/transcoder" ]   && cp -a /usr/local/WowzaStreamingEngine/transcoder ${WOWZA_DATA_DIR}/transcoder
+    [ ! -d "${WOWZA_DATA_DIR}/content" ]      && cp -a /usr/local/WowzaStreamingEngine/content ${WOWZA_DATA_DIR}/content
+    [ ! -d "${WOWZA_DATA_DIR}/backup" ]       && cp -a /usr/local/WowzaStreamingEngine/backup ${WOWZA_DATA_DIR}/backup
+    [ ! -d "${WOWZA_DATA_DIR}/stats" ]        && mkdir -p ${WOWZA_DATA_DIR}/stats
+    touch "${WOWZA_DATA_DIR}/.firstrun"
   fi
-  if [ ! -d "${WOWZA_DATA_DIR}/conf/manager" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/manager/conf ${WOWZA_DATA_DIR}/conf/manager
+
+  if [ -n "${WOWZA_KEY}" ]; then
+    echo "Installing Wowza Streaming Engine license..."
+    echo "${WOWZA_KEY}" > /usr/local/WowzaStreamingEngine/conf/Server.license
   fi
-  if [ ! -d "${WOWZA_DATA_DIR}/transcoder" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/transcoder ${WOWZA_DATA_DIR}/transcoder
-  fi
-  if [ ! -d "${WOWZA_DATA_DIR}/content" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/content ${WOWZA_DATA_DIR}/content
-  fi
-  if [ ! -d "${WOWZA_DATA_DIR}/backup" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/backup ${WOWZA_DATA_DIR}/backup
-  fi
-  if [ ! -d "${WOWZA_DATA_DIR}/stats" ]; then
-    mkdir -p ${WOWZA_DATA_DIR}/stats
-  fi
-  touch "${WOWZA_DATA_DIR}/.firstrun"
-fi
+}
 
-# setup symlinks
-rm -rf /usr/local/WowzaStreamingEngine/conf
-ln -sf ${WOWZA_DATA_DIR}/conf/wowza /usr/local/WowzaStreamingEngine/conf
+initialize_log_dir() {
+  mkdir -p ${WOWZA_LOG_DIR}/supervisor
+  chmod 0755 ${WOWZA_LOG_DIR}/supervisor
+  chown -R root:root ${WOWZA_LOG_DIR}/supervisor
 
-rm -rf /usr/local/WowzaStreamingEngine/manager/conf
-ln -sf ${WOWZA_DATA_DIR}/conf/manager /usr/local/WowzaStreamingEngine/manager/conf
+  mkdir -p ${WOWZA_LOG_DIR}/wowza
+  chmod 0755 ${WOWZA_LOG_DIR}/wowza
+  chown -R root:root ${WOWZA_LOG_DIR}/wowza
 
-rm -rf /usr/local/WowzaStreamingEngine/transcoder
-ln -sf ${WOWZA_DATA_DIR}/transcoder /usr/local/WowzaStreamingEngine/transcoder
+  mkdir -p ${WOWZA_LOG_DIR}/manager
+  chmod 0755 ${WOWZA_LOG_DIR}/manager
+  chown -R root:root ${WOWZA_LOG_DIR}/manager
+}
 
-rm -rf /usr/local/WowzaStreamingEngine/content
-ln -sf ${WOWZA_DATA_DIR}/content /usr/local/WowzaStreamingEngine/content
-
-rm -rf /usr/local/WowzaStreamingEngine/backup
-ln -sf ${WOWZA_DATA_DIR}/backup /usr/local/WowzaStreamingEngine/backup
-
-rm -rf /usr/local/WowzaStreamingEngine/stats
-ln -sf ${WOWZA_DATA_DIR}/stats /usr/local/WowzaStreamingEngine/stats
-
-# populate ${WOWZA_LOG_DIR}
-mkdir -m 0755 -p ${WOWZA_LOG_DIR}/supervisor   && chown -R root:root ${WOWZA_LOG_DIR}/supervisor
-mkdir -m 0755 -p ${WOWZA_LOG_DIR}/wowza        && chown -R root:root ${WOWZA_LOG_DIR}/wowza
-mkdir -m 0755 -p ${WOWZA_LOG_DIR}/manager      && chown -R root:root ${WOWZA_LOG_DIR}/manager
-
-#
 if [ -z "${WOWZA_KEY}" -a ! -f "/usr/local/WowzaStreamingEngine/conf/Server.license" ]; then
   echo "ERROR: "
   echo "  Please specify your Wowza Streaming Engine license key using"
@@ -63,11 +69,9 @@ if [ -z "${WOWZA_KEY}" -a ! -f "/usr/local/WowzaStreamingEngine/conf/Server.lice
   exit 1
 fi
 
-# install wowza license
-if [ -n "${WOWZA_KEY}" ]; then
-  echo "Installing Wowza Streaming Engine license..."
-  echo "${WOWZA_KEY}" > /usr/local/WowzaStreamingEngine/conf/Server.license
-fi
+initialize_data_dir
+initialize_log_dir
+rewire_wowza
 
 start () {
   # start supervisord
