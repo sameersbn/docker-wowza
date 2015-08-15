@@ -52,6 +52,7 @@ ln -sf /data/stats /usr/local/WowzaStreamingEngine/stats
 # populate /var/log/wowza
 mkdir -m 0755 -p /var/log/wowza/supervisor   && chown -R root:root /var/log/wowza/supervisor
 mkdir -m 0755 -p /var/log/wowza/wowza        && chown -R root:root /var/log/wowza/wowza
+mkdir -m 0755 -p /var/log/wowza/manager      && chown -R root:root /var/log/wowza/manager
 
 #
 if [ -z "${WOWZA_KEY}" -a ! -f "/usr/local/WowzaStreamingEngine/conf/Server.license" ]; then
