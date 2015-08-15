@@ -1,7 +1,8 @@
 FROM sameersbn/ubuntu:14.04.20150805
 MAINTAINER sameer@damagehead.com
 
-ENV WOWZA_VERSION=4.1.2
+ENV WOWZA_VERSION=4.1.2 \
+    WOWZA_DATA_DIR=/data
 
 RUN apt-get update \
  && apt-get install -y supervisor logrotate openjdk-7-jre \
@@ -14,6 +15,6 @@ COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
 
 EXPOSE 1935/tcp 8086/tcp 8087/tcp 8088/tcp
-VOLUME ["/data", "/var/log/wowza"]
+VOLUME ["${WOWZA_DATA_DIR}", "/var/log/wowza"]
 ENTRYPOINT ["/sbin/entrypoint.sh"]
 CMD ["start"]

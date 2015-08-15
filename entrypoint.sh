@@ -4,50 +4,50 @@ set -e
 WOWZA_KEY=${WOWZA_KEY:-}
 
 # create configuration directory
-mkdir -p /data/conf
+mkdir -p ${WOWZA_DATA_DIR}/conf
 
 # setup container for first run
-if [ ! -f "/data/.firstrun" ]; then
+if [ ! -f "${WOWZA_DATA_DIR}/.firstrun" ]; then
   echo "Configuring container for first run..."
-  if [ ! -d "/data/conf/wowza" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/conf /data/conf/wowza
+  if [ ! -d "${WOWZA_DATA_DIR}/conf/wowza" ]; then
+    cp -a /usr/local/WowzaStreamingEngine/conf ${WOWZA_DATA_DIR}/conf/wowza
   fi
-  if [ ! -d "/data/conf/manager" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/manager/conf /data/conf/manager
+  if [ ! -d "${WOWZA_DATA_DIR}/conf/manager" ]; then
+    cp -a /usr/local/WowzaStreamingEngine/manager/conf ${WOWZA_DATA_DIR}/conf/manager
   fi
-  if [ ! -d "/data/transcoder" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/transcoder /data/transcoder
+  if [ ! -d "${WOWZA_DATA_DIR}/transcoder" ]; then
+    cp -a /usr/local/WowzaStreamingEngine/transcoder ${WOWZA_DATA_DIR}/transcoder
   fi
-  if [ ! -d "/data/content" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/content /data/content
+  if [ ! -d "${WOWZA_DATA_DIR}/content" ]; then
+    cp -a /usr/local/WowzaStreamingEngine/content ${WOWZA_DATA_DIR}/content
   fi
-  if [ ! -d "/data/backup" ]; then
-    cp -a /usr/local/WowzaStreamingEngine/backup /data/backup
+  if [ ! -d "${WOWZA_DATA_DIR}/backup" ]; then
+    cp -a /usr/local/WowzaStreamingEngine/backup ${WOWZA_DATA_DIR}/backup
   fi
-  if [ ! -d "/data/stats" ]; then
-    mkdir -p /data/stats
+  if [ ! -d "${WOWZA_DATA_DIR}/stats" ]; then
+    mkdir -p ${WOWZA_DATA_DIR}/stats
   fi
-  touch "/data/.firstrun"
+  touch "${WOWZA_DATA_DIR}/.firstrun"
 fi
 
 # setup symlinks
 rm -rf /usr/local/WowzaStreamingEngine/conf
-ln -sf /data/conf/wowza /usr/local/WowzaStreamingEngine/conf
+ln -sf ${WOWZA_DATA_DIR}/conf/wowza /usr/local/WowzaStreamingEngine/conf
 
 rm -rf /usr/local/WowzaStreamingEngine/manager/conf
-ln -sf /data/conf/manager /usr/local/WowzaStreamingEngine/manager/conf
+ln -sf ${WOWZA_DATA_DIR}/conf/manager /usr/local/WowzaStreamingEngine/manager/conf
 
 rm -rf /usr/local/WowzaStreamingEngine/transcoder
-ln -sf /data/transcoder /usr/local/WowzaStreamingEngine/transcoder
+ln -sf ${WOWZA_DATA_DIR}/transcoder /usr/local/WowzaStreamingEngine/transcoder
 
 rm -rf /usr/local/WowzaStreamingEngine/content
-ln -sf /data/content /usr/local/WowzaStreamingEngine/content
+ln -sf ${WOWZA_DATA_DIR}/content /usr/local/WowzaStreamingEngine/content
 
 rm -rf /usr/local/WowzaStreamingEngine/backup
-ln -sf /data/backup /usr/local/WowzaStreamingEngine/backup
+ln -sf ${WOWZA_DATA_DIR}/backup /usr/local/WowzaStreamingEngine/backup
 
 rm -rf /usr/local/WowzaStreamingEngine/stats
-ln -sf /data/stats /usr/local/WowzaStreamingEngine/stats
+ln -sf ${WOWZA_DATA_DIR}/stats /usr/local/WowzaStreamingEngine/stats
 
 # populate /var/log/wowza
 mkdir -m 0755 -p /var/log/wowza/supervisor   && chown -R root:root /var/log/wowza/supervisor
