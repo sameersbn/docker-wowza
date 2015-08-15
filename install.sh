@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-WOWZA_VERSION=4.1.2
 WOWZA_INSTALLER_URL="http://www.wowza.com/downloads/WowzaStreamingEngine-4-1-2/WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin"
 
 # download wowza installer

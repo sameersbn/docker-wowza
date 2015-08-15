@@ -1,6 +1,8 @@
 FROM sameersbn/ubuntu:14.04.20150805
 MAINTAINER sameer@damagehead.com
 
+ENV WOWZA_VERSION=4.1.2
+
 RUN apt-get update \
  && apt-get install -y supervisor logrotate openjdk-7-jre \
  && rm -rf /var/lib/apt/lists/*
