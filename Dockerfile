@@ -6,8 +6,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 COPY install.sh /app/install.sh
-RUN chmod 755 /app/install.sh
-RUN /app/install.sh
+RUN bash /app/install.sh
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
