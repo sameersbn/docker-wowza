@@ -73,38 +73,8 @@ initialize_data_dir
 initialize_log_dir
 rewire_wowza
 
-start () {
-  # start supervisord
+if [ -z "${1}" ]; then
   exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
-}
-
-help () {
-  echo "Available options:"
-  echo " start      - Starts the wowza server (default)"
-  echo " help       - Displays the help"
-  echo " [command]  - Execute the specified linux command eg. bash."
-}
-
-case "$1" in
-  start)
-    start
-    ;;
-  help)
-    help
-    ;;
-  *)
-    if [ -x $1 ]; then
-      $1
-    else
-      prog=$(which $1)
-      if [ -n "${prog}" ] ; then
-        shift 1
-        $prog $@
-      else
-        help
-      fi
-    fi
-    ;;
-esac
-
-exit 0
+else
+  exec "$@"
+fi

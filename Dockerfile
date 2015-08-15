@@ -18,4 +18,3 @@ RUN chmod 755 /sbin/entrypoint.sh
 EXPOSE 1935/tcp 8086/tcp 8087/tcp 8088/tcp
 VOLUME ["${WOWZA_DATA_DIR}", "${WOWZA_LOG_DIR}"]
 ENTRYPOINT ["/sbin/entrypoint.sh"]
-CMD ["start"]
