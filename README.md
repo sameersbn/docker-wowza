@@ -1,4 +1,4 @@
-# sameersbn/wowza:4.1.2
+# sameersbn/wowza:4.1.2-1
 
 - [Introduction](#introduction)
   - [Contributing](#contributing)
@@ -47,7 +47,7 @@ If the above recommendations do not help then [report your issue](../../issues/n
 This image is available as a [trusted build](//hub.docker.com/r/sameersbn/wowza) on the [Docker hub](//hub.docker.com) and is the recommended method of installation.
 
 ```bash
-docker pull sameersbn/wowza:4.1.2
+docker pull sameersbn/wowza:4.1.2-1
 ```
 
 Alternatively you can build the image yourself.
@@ -71,7 +71,7 @@ docker run --name wowza -d --restart=always \
   --env 'WOWZA_ACCEPT_LICENSE=yes' \
   --env 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
   --volume /srv/docker/wowza:/var/lib/wowza \
-  sameersbn/wowza:4.1.2
+  sameersbn/wowza:4.1.2-1
 ```
 
 **The `-env WOWZA_ACCEPT_LICENSE=yes` parameter in the above command indicates that you agree to the Wowza EULA.**
@@ -119,7 +119,7 @@ To upgrade to newer releases:
   1. Download the updated Docker image:
 
   ```bash
-  docker pull sameersbn/wowza:4.1.2
+  docker pull sameersbn/wowza:4.1.2-1
   ```
 
   2. Stop the currently running image:
@@ -139,7 +139,7 @@ To upgrade to newer releases:
   ```bash
   docker run -name wowza -d \
     [OPTIONS] \
-    sameersbn/wowza:4.1.2
+    sameersbn/wowza:4.1.2-1
   ```
 
 ## Shell Access

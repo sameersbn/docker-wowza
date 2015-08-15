@@ -1,6 +1,6 @@
 # Changelog
 
-**latest**
+**4.1.2-1**
 - moved data dir to `/var/lib/wowza`
 - added `WOWZA_ACCEPT_LICENSE` environment variable
 
