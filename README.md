@@ -101,13 +101,13 @@ Refer to the wowza [quickstart guide](http://www.wowza.com/forums/content.php?3-
 
 # Data Store
 
-The wowza image is configured to save all configurations at `/data`. As such we should mount a volume at `/data`.
+The wowza image is configured to save all configurations at `/var/lib/wowza`. As such we should mount a volume at `/var/lib/wowza`.
 
 ```bash
 docker run --name='wowza' -it --rm \
   -e 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
   -p 1935:1935 -p 8086:8086 -p 8087:8087 -p 8088:8088 \
-  -v /opt/wowza:/data \
+  -v /opt/wowza:/var/lib/wowza \
   sameersbn/wowza:4.1.2
 ```
 

@@ -2,7 +2,7 @@ FROM sameersbn/ubuntu:14.04.20150805
 MAINTAINER sameer@damagehead.com
 
 ENV WOWZA_VERSION=4.1.2 \
-    WOWZA_DATA_DIR=/data \
+    WOWZA_DATA_DIR=/var/lib/wowza \
     WOWZA_LOG_DIR=/var/log/wowza
 
 RUN apt-get update \
