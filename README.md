@@ -87,6 +87,7 @@ Before you can start using this image you need to acquire a valid license from W
 
 ```bash
 docker run --name='wowza' -it --rm \
+  -e 'WOWZA_ACCEPT_LICENSE=yes' \
   -e 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
   -p 1935:1935 -p 8086:8086 -p 8087:8087 -p 8088:8088 \
   sameersbn/wowza:4.1.2
@@ -105,6 +106,7 @@ The wowza image is configured to save all configurations at `/var/lib/wowza`. As
 
 ```bash
 docker run --name='wowza' -it --rm \
+  -e 'WOWZA_ACCEPT_LICENSE=yes' \
   -e 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
   -p 1935:1935 -p 8086:8086 -p 8087:8087 -p 8088:8088 \
   -v /opt/wowza:/var/lib/wowza \

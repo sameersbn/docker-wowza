@@ -74,6 +74,13 @@ initialize_log_dir
 rewire_wowza
 
 if [ -z "${1}" ]; then
+  if [ "${WOWZA_ACCEPT_LICENSE}" != "yes" ]; then
+    echo "ERROR: "
+    echo "  Please accept the Wowza EULA by specifying 'WOWZA_ACCEPT_LICENSE=yes'"
+    echo "  Visit https://www.wowza.com/legal to read the Licensing Terms."
+    echo "  Aborting..."
+    exit 1
+  fi
   exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
 else
   exec "$@"
