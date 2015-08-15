@@ -1,169 +1,156 @@
-# Table of Contents
+# sameersbn/wowza:4.1.2
+
 - [Introduction](#introduction)
-    - [Version](#version)
-    - [Changelog](Changelog.md)
-- [Contributing](#contributing)
-- [Issues](#issues)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Data Store](#data-store)
-- [Shell Access](#shell-access)
-- [Upgrading](#upgrading)
+  - [Contributing](#contributing)
+  - [Issues](#issues)
+- [Getting started](#getting-started)
+  - [Installation](#installation)
+  - [Quickstart](#quickstart)
+  - [Persistence](#persistence)
+  - [Logs](#logs)
 - [References](#references)
 
 # Introduction
 
-Dockerfile to build a [Wowza Streaming Engine](http://www.wowza.com/products/streaming-engine) server.
+`Dockerfile` to create a [Docker](https://www.docker.com/) container image for [Wowza Streaming Engine](http://www.wowza.com/products/streaming-engine).
 
 This Dockerfile is not provided by or endorsed by Wowza Media Systems.
 
 **NOTE**: By using this image you are agreeing to comply with the [Wowza EULA](https://www.wowza.com/legal)
 
-## Version
+Wowza Streaming Engine is unified streaming media server software developed by Wowza Media Systems. The server is used for streaming of live and on-demand video, audio, and rich Internet applications over IP networks to desktop, laptop, and tablet computers, mobile devices, IPTV set-top boxes, internet-connected TV sets, game consoles, and other network-connected devices.
 
-Current Version: **4.1.2**
-
-# Contributing
+## Contributing
 
 If you find this image useful here's how you can help:
 
-- Send a Pull Request with your awesome new features and bug fixes
-- Help new users with [Issues](https://github.com/sameersbn/docker-wowza/issues) they may encounter
+- Send a pull request with your awesome features and bug fixes
+- Help users resolve their [issues](../../issues?q=is%3Aopen+is%3Aissue).
 - Support the development of this image with a [donation](http://www.damagehead.com/donate/)
 
-# Issues
+## Issues
 
-Docker is a relatively new project and is active being developed and tested by a thriving community of developers and testers and every release of docker features many enhancements and bugfixes.
+Before reporting your issue please try updating Docker to the latest version and check if it resolves the issue. Refer to the Docker [installation guide](https://docs.docker.com/installation) for instructions.
 
-Given the nature of the development and release cycle it is very important that you have the latest version of docker installed because any issue that you encounter might have already been fixed with a newer docker release.
+SELinux users should try disabling SELinux using the command `setenforce 0` to see if it resolves the issue.
 
-For ubuntu users I suggest [installing docker](https://docs.docker.com/installation/ubuntulinux/) using docker's own package repository since the version of docker packaged in the ubuntu repositories are a little dated.
+If the above recommendations do not help then [report your issue](../../issues/new) along with the following information:
 
-Here is the shortform of the installation of an updated version of docker on ubuntu.
+- Output of the `docker version` and `docker info` commands
+- The `docker run` command or `docker-compose.yml` used to start the image. Mask out the sensitive bits.
+- Please state if you are using [Boot2Docker](http://www.boot2docker.io), [VirtualBox](https://www.virtualbox.org), etc.
 
-```bash
-sudo apt-get purge docker.io
-curl -s https://get.docker.io/ubuntu/ | sudo sh
-sudo apt-get update
-sudo apt-get install lxc-docker
-```
+# Getting started
 
-Fedora and RHEL/CentOS users should try disabling selinux with `setenforce 0` and check if resolves the issue. If it does than there is not much that I can help you with. You can either stick with selinux disabled (not recommended by redhat) or switch to using ubuntu.
+## Installation
 
-If using the latest docker version and/or disabling selinux does not fix the issue then please file a issue request on the [issues](https://github.com/sameersbn/docker-wowza/issues) page.
-
-In your issue report please make sure you provide the following information:
-
-- The host ditribution and release version.
-- Output of the `docker version` command
-- Output of the `docker info` command
-- The `docker run` command you used to run the image (mask out the sensitive bits).
-
-# Installation
-
-Pull the the image from the docker index. This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
+This image is available as a [trusted build](//hub.docker.com/r/sameersbn/wowza) on the [Docker hub](//hub.docker.com) and is the recommended method of installation.
 
 ```bash
 docker pull sameersbn/wowza:4.1.2
 ```
 
-You can also pull the `latest` tag which is built from the repository *HEAD*
-
-```bash
-docker pull sameersbn/wowza:latest
-```
-
-Alternately you can build the image locally.
+Alternatively you can build the image yourself.
 
 ```bash
 git clone https://github.com/sameersbn/docker-wowza.git
 cd docker-wowza
-docker build --tag="$USER/wowza" .
+docker build --tag $USER/wowza .
 ```
 
-# Quick Start
+## Quickstart
 
 Before you can start using this image you need to acquire a valid license from Wowza Media Systems for the Wowza Streaming Engine software. If you do not have one, you can [request a free trial license](http://www.wowza.com/pricing/trial) or purchase a license from Wowza Media Systems.
 
+Start Wowza using:
+
 ```bash
-docker run --name='wowza' -it --rm \
-  -e 'WOWZA_ACCEPT_LICENSE=yes' \
-  -e 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
-  -p 1935:1935 -p 8086:8086 -p 8087:8087 -p 8088:8088 \
+docker run --name wowza -d --restart=always \
+  --publish 1935:1935 --publish 8086:8086 \
+  --publish 8087:8087 --publish 8088:8088 \
+  --env 'WOWZA_ACCEPT_LICENSE=yes' \
+  --env 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
+  --volume /srv/docker/wowza:/var/lib/wowza \
   sameersbn/wowza:4.1.2
 ```
 
-Point your browser to `http://localhost:8088` and login using the default username and password:
+**The `-env WOWZA_ACCEPT_LICENSE=yes` parameter in the above command indicates that you agree to the Wowza EULA.**
 
-* username: **admin**
-* password: **admin**
+*Alternatively, you can use the sample [docker-compose.yml](docker-compose.yml) file to start the container using [Docker Compose](https://docs.docker.com/compose/)*
 
-Refer to the wowza [quickstart guide](http://www.wowza.com/forums/content.php?3-quick-start-guide) for wowza configuration instructions.
+Point your browser to http://localhost:8088 and login using the default username and password:
 
-# Data Store
+* username: `admin`
+* password: `admin`
 
-The wowza image is configured to save all configurations at `/var/lib/wowza`. As such we should mount a volume at `/var/lib/wowza`.
+Refer to the wowza [quickstart guide](http://www.wowza.com/forums/content.php?3-quick-start-guide) to get started with Wowza.
+
+## Persistence
+
+For Wowza to preserve its state across container shutdown and startup you should mount a volume at `/var/lib/wowza`.
+
+> *The [Quickstart](#quickstart) command already mounts a volume for persistence.*
+
+SELinux users should update the security context of the host mountpoint so that it plays nicely with Docker:
 
 ```bash
-docker run --name='wowza' -it --rm \
-  -e 'WOWZA_ACCEPT_LICENSE=yes' \
-  -e 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
-  -p 1935:1935 -p 8086:8086 -p 8087:8087 -p 8088:8088 \
-  -v /opt/wowza:/var/lib/wowza \
-  sameersbn/wowza:4.1.2
+mkdir -p /srv/docker/wowza
+chcon -Rt svirt_sandbox_file_t /srv/docker/wowza
 ```
 
-Upon the first run the image will copy all configurations at this location allowing users to manually edit the configurations if required.
+At first run the Wowza configuration files, among other things, will be copied into this location. You can manually edit these configurations if required.
 
-# Shell Access
+## Logs
 
-For debugging and maintenance purposes you may want access the containers shell. If you are using docker version `1.3.0` or higher you can access a running containers shell using `docker exec` command.
+The Wowza logs are populated in `/var/log/wowza`. You can mount a volume at this location to easily access these logs and/or perform log rotation.
+
+Alternatively you can also use `docker exec` to tail the logs. For example,
+
+```bash
+docker exec -it wowza tail -f /var/log/wowza/wowza/wowzastreamingengine_access.log
+```
+
+# Maintenance
+
+## Upgrading
+
+To upgrade to newer releases:
+
+  1. Download the updated Docker image:
+
+  ```bash
+  docker pull sameersbn/wowza:4.1.2
+  ```
+
+  2. Stop the currently running image:
+
+  ```bash
+  docker stop wowza
+  ```
+
+  3. Remove the stopped container
+
+  ```bash
+  docker rm -v wowza
+  ```
+
+  4. Start the updated image
+
+  ```bash
+  docker run -name wowza -d \
+    [OPTIONS] \
+    sameersbn/wowza:4.1.2
+  ```
+
+## Shell Access
+
+For debugging and maintenance purposes you may want access the containers shell. If you are using Docker version `1.3.0` or higher you can access a running containers shell by starting `bash` using `docker exec`:
 
 ```bash
 docker exec -it wowza bash
 ```
 
-If you are using an older version of docker, you can use the [nsenter](http://man7.org/linux/man-pages/man1/nsenter.1.html) linux tool (part of the util-linux package) to access the container shell.
-
-Some linux distros (e.g. ubuntu) use older versions of the util-linux which do not include the `nsenter` tool. To get around this @jpetazzo has created a nice docker image that allows you to install the `nsenter` utility and a helper script named `docker-enter` on these distros.
-
-To install `nsenter` execute the following command on your host
-
-```bash
-docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
-```
-
-Now you can access the container shell using the command
-
-```bash
-sudo docker-enter wowza
-```
-
-For more information refer https://github.com/jpetazzo/nsenter
-
-# Upgrading
-
-To upgrade to newer releases, simply follow this 3 step upgrade procedure.
-
-- **Step 1**: Pull the latest version from the docker index
-
-```bash
-docker pull sameersbn/wowza:4.1.2
-```
-
-- **Step 2**: Stop and remove the running container
-
-```bash
-docker stop wowza
-docker rm wowza
-```
-
-- **Step 3**: Start the updated image
-
-```bash
-docker run --name=wowza -d [OPTIONS] sameersbn/wowza:4.1.2
-```
-
 # References
 
+  * https://www.wowza.com/legal
   * http://www.wowza.com/products/streaming-engine
