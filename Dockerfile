@@ -9,8 +9,8 @@ COPY assets/install /app/install
 RUN chmod 755 /app/install
 RUN /app/install
 
-COPY assets/init /app/init
-RUN chmod 755 /app/init
+COPY entrypoint.sh /sbin/entrypoint.sh
+RUN chmod 755 /sbin/entrypoint.sh
 
 EXPOSE 1935
 EXPOSE 8086
@@ -20,5 +20,5 @@ EXPOSE 8088
 VOLUME ["/data"]
 VOLUME ["/var/log/wowza"]
 
-ENTRYPOINT ["/app/init"]
+ENTRYPOINT ["/sbin/entrypoint.sh"]
 CMD ["start"]
