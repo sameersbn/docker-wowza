@@ -22,16 +22,16 @@ chmod +x WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
 # remove installer
 rm -rf WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin WowzaStreamingEngine-${WOWZA_VERSION}.deb
 
-# move supervisord.log file to /var/log/wowza/supervisor/
-sed 's|^logfile=.*|logfile=/var/log/wowza/supervisor/supervisord.log ;|' -i /etc/supervisor/supervisord.conf
+# move supervisord.log file to ${WOWZA_LOG_DIR}/supervisor/
+sed 's|^logfile=.*|logfile='"${WOWZA_LOG_DIR}"'/supervisor/supervisord.log ;|' -i /etc/supervisor/supervisord.conf
 
-# symlink /usr/local/WowzaStreamingEngine/logs -> /var/log/wowza/wowza
+# symlink /usr/local/WowzaStreamingEngine/logs -> ${WOWZA_LOG_DIR}/wowza
 rm -rf /usr/local/WowzaStreamingEngine/logs
-ln -sf /var/log/wowza/wowza /usr/local/WowzaStreamingEngine/logs
+ln -sf ${WOWZA_LOG_DIR}/wowza /usr/local/WowzaStreamingEngine/logs
 
-# symlink /usr/local/WowzaStreamingEngine/manager/logs -> /var/log/wowza/manager
+# symlink /usr/local/WowzaStreamingEngine/manager/logs -> ${WOWZA_LOG_DIR}/manager
 rm -rf /usr/local/WowzaStreamingEngine/manager/logs
-ln -sf /var/log/wowza/manager /usr/local/WowzaStreamingEngine/manager/logs
+ln -sf ${WOWZA_LOG_DIR}/manager /usr/local/WowzaStreamingEngine/manager/logs
 
 # configure supervisord to start wowza streaming engine
 cat > /etc/supervisor/conf.d/wowza.conf <<EOF
@@ -42,8 +42,8 @@ command=/usr/local/WowzaStreamingEngine/bin/startup.sh
 user=root
 autostart=true
 autorestart=true
-stdout_logfile=/var/log/wowza/supervisor/%(program_name)s.log
-stderr_logfile=/var/log/wowza/supervisor/%(program_name)s.log
+stdout_logfile=${WOWZA_LOG_DIR}/supervisor/%(program_name)s.log
+stderr_logfile=${WOWZA_LOG_DIR}/supervisor/%(program_name)s.log
 EOF
 
 # configure supervisord to start wowza streaming engine manager
@@ -55,8 +55,8 @@ command=/usr/local/WowzaStreamingEngine/manager/bin/startmgr.sh
 user=root
 autostart=true
 autorestart=true
-stdout_logfile=/var/log/wowza/supervisor/%(program_name)s.log
-stderr_logfile=/var/log/wowza/supervisor/%(program_name)s.log
+stdout_logfile=${WOWZA_LOG_DIR}/supervisor/%(program_name)s.log
+stderr_logfile=${WOWZA_LOG_DIR}/supervisor/%(program_name)s.log
 EOF
 
 # configure supervisord to start crond
@@ -68,13 +68,13 @@ command=/usr/sbin/cron -f
 user=root
 autostart=true
 autorestart=true
-stdout_logfile=/var/log/wowza/supervisor/%(program_name)s.log
-stderr_logfile=/var/log/wowza/supervisor/%(program_name)s.log
+stdout_logfile=${WOWZA_LOG_DIR}/supervisor/%(program_name)s.log
+stderr_logfile=${WOWZA_LOG_DIR}/supervisor/%(program_name)s.log
 EOF
 
 # configure supervisord log rotation
 cat > /etc/logrotate.d/supervisord <<EOF
-/var/log/wowza/supervisor/*.log {
+${WOWZA_LOG_DIR}/supervisor/*.log {
   weekly
   missingok
   rotate 52
@@ -87,7 +87,7 @@ EOF
 
 # configure wowza log rotation
 cat > /etc/logrotate.d/wowza <<EOF
-/var/log/wowza/wowza/*.log {
+${WOWZA_LOG_DIR}/wowza/*.log {
   weekly
   missingok
   rotate 52
@@ -100,7 +100,7 @@ EOF
 
 # configure manager log rotation
 cat > /etc/logrotate.d/wowza <<EOF
-/var/log/wowza/manager/*.log {
+${WOWZA_LOG_DIR}/manager/*.log {
   weekly
   missingok
   rotate 52
