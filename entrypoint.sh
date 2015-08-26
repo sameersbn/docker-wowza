@@ -40,11 +40,6 @@ initialize_data_dir() {
     [[ ! -d ${WOWZA_DATA_DIR}/stats ]]        && mkdir -p ${WOWZA_DATA_DIR}/stats
     touch ${WOWZA_DATA_DIR}/.firstrun
   fi
-
-  if [[ -n ${WOWZA_KEY} ]]; then
-    echo "Installing Wowza Streaming Engine license..."
-    echo "${WOWZA_KEY}" > /usr/local/WowzaStreamingEngine/conf/Server.license
-  fi
 }
 
 initialize_log_dir() {
@@ -61,17 +56,25 @@ initialize_log_dir() {
   chown -R root:root ${WOWZA_LOG_DIR}/manager
 }
 
-if [[ -z ${WOWZA_KEY} && ! -f /usr/local/WowzaStreamingEngine/conf/Server.license ]]; then
-  echo "ERROR: "
-  echo "  Please specify your Wowza Streaming Engine license key using"
-  echo "  the WOWZA_KEY environment variable."
-  echo "  Cannot continue without a license. Aborting..."
-  exit 1
-fi
+initialize_license() {
+  if [[ -z ${WOWZA_KEY} && ! -f /usr/local/WowzaStreamingEngine/conf/Server.license ]]; then
+    echo "ERROR: "
+    echo "  Please specify your Wowza Streaming Engine license key using"
+    echo "  the WOWZA_KEY environment variable."
+    echo "  Cannot continue without a license. Aborting..."
+    exit 1
+  fi
+
+  if [[ -n ${WOWZA_KEY} ]]; then
+    echo "Installing Wowza Streaming Engine license..."
+    echo "${WOWZA_KEY}" > /usr/local/WowzaStreamingEngine/conf/Server.license
+  fi
+}
 
 initialize_data_dir
 initialize_log_dir
 rewire_wowza
+initialize_license
 
 if [[ -z ${1} ]]; then
   if [[ ${WOWZA_ACCEPT_LICENSE} != yes ]]; then
