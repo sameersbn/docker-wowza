@@ -8,6 +8,9 @@
   - [Quickstart](#quickstart)
   - [Persistence](#persistence)
   - [Logs](#logs)
+- [Maintainance](#maintenance)
+  - [Upgrading](#upgrading)
+  - [Shell Access](#shell-access)
 - [References](#references)
 
 # Introduction
