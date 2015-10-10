@@ -6,7 +6,7 @@ ENV WOWZA_VERSION=4.1.2 \
     WOWZA_LOG_DIR=/var/log/wowza
 
 RUN apt-get update \
- && apt-get install -y wget supervisor openjdk-7-jre \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y wget supervisor openjdk-7-jre \
  && rm -rf /var/lib/apt/lists/*
 
 COPY install.sh /app/install.sh
