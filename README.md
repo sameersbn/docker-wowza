@@ -1,3 +1,5 @@
+[![Docker Repository on Quay.io](https://quay.io/repository/sameersbn/wowza/status "Docker Repository on Quay.io")](https://quay.io/repository/sameersbn/wowza)
+
 # quay.io/sameersbn/wowza:4.1.2-2
 
 - [Introduction](#introduction)
