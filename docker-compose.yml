@@ -1,5 +1,5 @@
 Wowza:
-  image: quay.io/sameersbn/wowza:4.1.2-2
+  image: quay.io/sameersbn/wowza:4.1.2-3
   environment:
     - WOWZA_ACCEPT_LICENSE=yes
     - WOWZA_KEY=
