@@ -1,6 +1,6 @@
 [![Docker Repository on Quay.io](https://quay.io/repository/sameersbn/wowza/status "Docker Repository on Quay.io")](https://quay.io/repository/sameersbn/wowza)
 
-# quay.io/sameersbn/wowza:4.1.2-3
+# quay.io/sameersbn/wowza:4.1.2-4
 
 - [Introduction](#introduction)
   - [Contributing](#contributing)
@@ -52,7 +52,7 @@ If the above recommendations do not help then [report your issue](../../issues/n
 Automated builds of the image are available on [Quay.io](https://quay.io/repository/sameersbn/wowza) and is the recommended method of installation.
 
 ```bash
-docker pull quay.io/sameersbn/wowza:4.1.2-3
+docker pull quay.io/sameersbn/wowza:4.1.2-4
 ```
 
 Alternatively you can build the image yourself.
@@ -76,7 +76,7 @@ docker run --name wowza -d --restart=always \
   --env 'WOWZA_ACCEPT_LICENSE=yes' \
   --env 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
   --volume /srv/docker/wowza:/var/lib/wowza \
-  quay.io/sameersbn/wowza:4.1.2-3
+  quay.io/sameersbn/wowza:4.1.2-4
 ```
 
 **The `--env WOWZA_ACCEPT_LICENSE=yes` parameter in the above command indicates that you agree to the Wowza EULA.**
@@ -124,7 +124,7 @@ To upgrade to newer releases:
   1. Download the updated Docker image:
 
   ```bash
-  docker pull quay.io/sameersbn/wowza:4.1.2-3
+  docker pull quay.io/sameersbn/wowza:4.1.2-4
   ```
 
   2. Stop the currently running image:
@@ -144,7 +144,7 @@ To upgrade to newer releases:
   ```bash
   docker run -name wowza -d \
     [OPTIONS] \
-    quay.io/sameersbn/wowza:4.1.2-3
+    quay.io/sameersbn/wowza:4.1.2-4
   ```
 
 ## Shell Access
