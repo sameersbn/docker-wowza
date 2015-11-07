@@ -1,4 +1,4 @@
 all: build
 
 build:
-	@docker build --tag=quay.io/sameersbn/wowza .
+	@docker build --tag=sameersbn/wowza .
