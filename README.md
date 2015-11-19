@@ -60,9 +60,7 @@ docker pull sameersbn/wowza:4.1.2-5
 Alternatively you can build the image yourself.
 
 ```bash
-git clone https://github.com/sameersbn/docker-wowza.git
-cd docker-wowza
-docker build --tag $USER/wowza .
+docker build -t sameersbn/wowza github.com/sameersbn/docker-wowza
 ```
 
 ## Quickstart
