@@ -20,6 +20,9 @@ rewire_wowza() {
   rm -rf /usr/local/WowzaStreamingEngine/backup
   ln -sf ${WOWZA_DATA_DIR}/backup /usr/local/WowzaStreamingEngine/backup
 
+  rm -rf /usr/local/WowzaStreamingEngine/applications
+  ln -sf ${WOWZA_DATA_DIR}/applications /usr/local/WowzaStreamingEngine/applications
+
   rm -rf /usr/local/WowzaStreamingEngine/stats
   ln -sf ${WOWZA_DATA_DIR}/stats /usr/local/WowzaStreamingEngine/stats
 }
@@ -37,6 +40,7 @@ initialize_data_dir() {
     [[ ! -d ${WOWZA_DATA_DIR}/transcoder ]]   && cp -a /usr/local/WowzaStreamingEngine/transcoder ${WOWZA_DATA_DIR}/transcoder
     [[ ! -d ${WOWZA_DATA_DIR}/content ]]      && cp -a /usr/local/WowzaStreamingEngine/content ${WOWZA_DATA_DIR}/content
     [[ ! -d ${WOWZA_DATA_DIR}/backup ]]       && cp -a /usr/local/WowzaStreamingEngine/backup ${WOWZA_DATA_DIR}/backup
+    [[ ! -d ${WOWZA_DATA_DIR}/applications ]] && cp -a /usr/local/WowzaStreamingEngine/applications ${WOWZA_DATA_DIR}/applications
     [[ ! -d ${WOWZA_DATA_DIR}/stats ]]        && mkdir -p ${WOWZA_DATA_DIR}/stats
     touch ${WOWZA_DATA_DIR}/.firstrun
   fi
