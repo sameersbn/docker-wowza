@@ -1,0 +1,14 @@
+[Unit]
+Description=Wowza Streaming Engine
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill wowza
+ExecStartPre=-/usr/bin/docker rm wowza
+#ExecStartPre=-/usr/bin/docker pull sameersbn/wowza:4.1.2-5
+ExecStart=/usr/bin/docker run --name wowza --publish 1935:1935 --publish 8086:8086 --publish 8087:8087 --publish 8088:8088 --env 'WOWZA_ACCEPT_LICENSE=yes' --env 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' --volume /srv/docker/wowza/data:/var/lib/wowza --volume /srv/docker/wowza/log:/var/log/wowza sameersbn/wowza:4.1.2-5
+ExecStop=/usr/bin/docker stop wowza
+
+[Install]
+WantedBy=multi-user.target
