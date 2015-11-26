@@ -9,4 +9,5 @@ Wowza:
     - "8087:8087"
     - "8088:8088"
   volumes:
-    - /srv/docker/wowza:/var/lib/wowza
+    - /srv/docker/wowza/data:/var/lib/wowza
+    - /srv/docker/wowza/log:/var/log/wowza
