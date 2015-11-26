@@ -75,7 +75,8 @@ docker run --name wowza -d --restart=always \
   --publish 8087:8087 --publish 8088:8088 \
   --env 'WOWZA_ACCEPT_LICENSE=yes' \
   --env 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
-  --volume /srv/docker/wowza:/var/lib/wowza \
+  --volume /srv/docker/wowza/data:/var/lib/wowza \
+  --volume /srv/docker/wowza/log:/var/log/wowza \
   sameersbn/wowza:4.1.2-5
 ```
 
