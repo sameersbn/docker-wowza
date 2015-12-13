@@ -1,6 +1,6 @@
 [![Docker Repository on Quay.io](https://quay.io/repository/sameersbn/wowza/status "Docker Repository on Quay.io")](https://quay.io/repository/sameersbn/wowza)
 
-# sameersbn/wowza:4.1.2-5
+# sameersbn/wowza:4.1.2-6
 
 - [Introduction](#introduction)
   - [Contributing](#contributing)
@@ -54,7 +54,7 @@ Automated builds of the image are available on [Dockerhub](https://hub.docker.co
 > **Note**: Builds are also available on [Quay.io](https://quay.io/repository/sameersbn/wowza)
 
 ```bash
-docker pull sameersbn/wowza:4.1.2-5
+docker pull sameersbn/wowza:4.1.2-6
 ```
 
 Alternatively you can build the image yourself.
@@ -77,7 +77,7 @@ docker run --name wowza -d --restart=always \
   --env 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
   --volume /srv/docker/wowza/data:/var/lib/wowza \
   --volume /srv/docker/wowza/log:/var/log/wowza \
-  sameersbn/wowza:4.1.2-5
+  sameersbn/wowza:4.1.2-6
 ```
 
 **The `--env WOWZA_ACCEPT_LICENSE=yes` parameter in the above command indicates that you agree to the Wowza EULA.**
@@ -125,7 +125,7 @@ To upgrade to newer releases:
   1. Download the updated Docker image:
 
   ```bash
-  docker pull sameersbn/wowza:4.1.2-5
+  docker pull sameersbn/wowza:4.1.2-6
   ```
 
   2. Stop the currently running image:
@@ -145,7 +145,7 @@ To upgrade to newer releases:
   ```bash
   docker run -name wowza -d \
     [OPTIONS] \
-    sameersbn/wowza:4.1.2-5
+    sameersbn/wowza:4.1.2-6
   ```
 
 ## Shell Access
