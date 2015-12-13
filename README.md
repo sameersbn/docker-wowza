@@ -1,5 +1,9 @@
 [![Docker Repository on Quay.io](https://quay.io/repository/sameersbn/wowza/status "Docker Repository on Quay.io")](https://quay.io/repository/sameersbn/wowza)
 
+> **NOTICE**:
+>
+> Due to changes in the WOWZA installer, `4.1.x` is the last version that is made available by this image.
+
 # sameersbn/wowza:4.1.2-6
 
 - [Introduction](#introduction)
