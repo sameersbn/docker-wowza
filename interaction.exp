@@ -1,0 +1,32 @@
+#!/usr/bin/expect -f
+
+# Modified version of https://github.com/simplycycling/ansible-wowza/blob/f6ed47147d6ab318230f978be99322b9fe58d8eb/templates/script.exp.j2
+
+set timeout -1
+spawn ./WowzaStreamingEngine.run
+
+expect {
+  -gl "*Press *Enter* to continue*" { send -- "\r"; exp_continue }
+  -gl "*Do you accept this agreement*"
+}
+send -- "\ry\r"
+
+expect -gl "*License Key*"
+send -- "xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxxxxxxxxx\r"
+
+expect -gl "*User Name*"
+send -- "admin\r"
+
+expect -gl "*Password*"
+send -- "admin\r"
+
+expect -gl "*Confirm Password*"
+send -- "admin\r"
+
+expect -gl "*Start Wowza Streaming Engine automatically*"
+send -- "n\r"
+
+expect -gl "*Do you want to continue*"
+send -- "y\r"
+
+expect eof

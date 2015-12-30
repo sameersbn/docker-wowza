@@ -1,26 +1,20 @@
 #!/bin/bash
 set -e
 
-WOWZA_INSTALLER_URL="http://www.wowza.com/downloads/WowzaStreamingEngine-4-1-2/WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin"
+WOWZA_INSTALLER_URL="https://www.wowza.com/downloads/WowzaStreamingEngine-${WOWZA_VERSION//./-}/WowzaStreamingEngine-${WOWZA_VERSION}-linux-x64-installer.run"
+WOWZA_INSTALLER_FILE="WowzaStreamingEngine.run"
+
+cd /app
 
 # download wowza installer
-wget "${WOWZA_INSTALLER_URL}" -O WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
-
-# disable user interaction during install
-sed 's/^more <<"EOF"$/cat <<"EOF"/'                               -i WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
-sed 's/^agreed=$/agreed=1/'                                       -i WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
-sed 's/^ADMINUSER=$/ADMINUSER=admin/'                             -i WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
-sed 's/\$ADMINUSER  \$ADMINPASS1 admin/\$ADMINUSER  admin admin/' -i WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
-sed 's/^PWMATCH=$/PWMATCH=1/'                                     -i WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
-sed 's/^VALIDLICKEY=$/VALIDLICKEY=1/'                             -i WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
-sed 's/STARTSERVICES=$/STARTSERVICES=0/'                          -i WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
+wget "${WOWZA_INSTALLER_URL}" -O "${WOWZA_INSTALLER_FILE}"
 
 # install wowza streaming engine
-chmod +x WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
-./WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin
+chmod +x "${WOWZA_INSTALLER_FILE}"
+./interaction.exp
 
-# remove installer
-rm -rf WowzaStreamingEngine-${WOWZA_VERSION}.deb.bin WowzaStreamingEngine-${WOWZA_VERSION}.deb
+# remove installer and old temporary license
+rm -rf "${WOWZA_INSTALLER_FILE}" /usr/local/WowzaStreamingEngine/conf/Server.license
 
 # move supervisord.log file to ${WOWZA_LOG_DIR}/supervisor/
 sed 's|^logfile=.*|logfile='"${WOWZA_LOG_DIR}"'/supervisor/supervisord.log ;|' -i /etc/supervisor/supervisord.conf
