@@ -9,9 +9,8 @@ RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y wget supervisor openjdk-7-jre expect \
  && rm -rf /var/lib/apt/lists/*
 
-COPY interaction.exp /app/interaction.exp
-COPY install.sh /app/install.sh
-RUN bash /app/install.sh
+COPY prepare.sh interaction.exp /app/
+RUN /app/prepare.sh
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh

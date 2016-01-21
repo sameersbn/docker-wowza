@@ -8,24 +8,10 @@ cd /app
 
 # download wowza installer
 wget "${WOWZA_INSTALLER_URL}" -O "${WOWZA_INSTALLER_FILE}"
-
-# install wowza streaming engine
 chmod +x "${WOWZA_INSTALLER_FILE}"
-./interaction.exp
-
-# remove installer and old temporary license
-rm -rf "${WOWZA_INSTALLER_FILE}" /usr/local/WowzaStreamingEngine/conf/Server.license
 
 # move supervisord.log file to ${WOWZA_LOG_DIR}/supervisor/
 sed 's|^logfile=.*|logfile='"${WOWZA_LOG_DIR}"'/supervisor/supervisord.log ;|' -i /etc/supervisor/supervisord.conf
-
-# symlink /usr/local/WowzaStreamingEngine/logs -> ${WOWZA_LOG_DIR}/wowza
-rm -rf /usr/local/WowzaStreamingEngine/logs
-ln -sf ${WOWZA_LOG_DIR}/wowza /usr/local/WowzaStreamingEngine/logs
-
-# symlink /usr/local/WowzaStreamingEngine/manager/logs -> ${WOWZA_LOG_DIR}/manager
-rm -rf /usr/local/WowzaStreamingEngine/manager/logs
-ln -sf ${WOWZA_LOG_DIR}/manager /usr/local/WowzaStreamingEngine/manager/logs
 
 # configure supervisord to start wowza streaming engine
 cat > /etc/supervisor/conf.d/wowza.conf <<EOF
