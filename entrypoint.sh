@@ -3,6 +3,45 @@ set -e
 
 WOWZA_KEY=${WOWZA_KEY:-}
 
+check_and_install_wowza() {
+  echo "Checking if Wowza Streaming Engine is installed..."
+  if [[ -e /usr/local/WowzaStreamingEngine ]]; then
+    echo "Installation found"
+    return
+  fi
+
+  echo "No installation found"
+  echo "Installing Wowza..."
+
+  if [[ ${WOWZA_ACCEPT_LICENSE} != yes ]]; then
+    echo "ERROR: "
+    echo "  Please accept the Wowza EULA by specifying 'WOWZA_ACCEPT_LICENSE=yes'"
+    echo "  Visit https://www.wowza.com/legal to read the Licensing Terms."
+    echo "  Aborting..."
+    exit 1
+  fi
+
+  if [[ -z ${WOWZA_KEY} && ! -f /usr/local/WowzaStreamingEngine/conf/Server.license ]]; then
+    echo "ERROR: "
+    echo "  Please specify your Wowza Streaming Engine license key using"
+    echo "  the WOWZA_KEY environment variable."
+    echo "  Cannot continue without a license. Aborting..."
+    exit 1
+  fi
+
+  # install Wowza
+  sed -i "s/xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxxxxxxxxx/${WOWZA_KEY}/g" /app/interaction.exp
+  /app/interaction.exp > /dev/null
+
+  # symlink /usr/local/WowzaStreamingEngine/logs -> ${WOWZA_LOG_DIR}/wowza
+  rm -rf /usr/local/WowzaStreamingEngine/logs
+  ln -sf ${WOWZA_LOG_DIR}/wowza /usr/local/WowzaStreamingEngine/logs
+
+  # symlink /usr/local/WowzaStreamingEngine/manager/logs -> ${WOWZA_LOG_DIR}/manager
+  rm -rf /usr/local/WowzaStreamingEngine/manager/logs
+  ln -sf ${WOWZA_LOG_DIR}/manager /usr/local/WowzaStreamingEngine/manager/logs
+}
+
 rewire_wowza() {
   echo "Preparing Wowza..."
   rm -rf /usr/local/WowzaStreamingEngine/conf
@@ -60,34 +99,12 @@ initialize_log_dir() {
   chown -R root:root ${WOWZA_LOG_DIR}/manager
 }
 
-initialize_license() {
-  if [[ -z ${WOWZA_KEY} && ! -f /usr/local/WowzaStreamingEngine/conf/Server.license ]]; then
-    echo "ERROR: "
-    echo "  Please specify your Wowza Streaming Engine license key using"
-    echo "  the WOWZA_KEY environment variable."
-    echo "  Cannot continue without a license. Aborting..."
-    exit 1
-  fi
-
-  if [[ -n ${WOWZA_KEY} ]]; then
-    echo "Installing Wowza Streaming Engine license..."
-    echo "${WOWZA_KEY}" > /usr/local/WowzaStreamingEngine/conf/Server.license
-  fi
-}
-
+check_and_install_wowza
 initialize_data_dir
 initialize_log_dir
 rewire_wowza
-initialize_license
 
 if [[ -z ${1} ]]; then
-  if [[ ${WOWZA_ACCEPT_LICENSE} != yes ]]; then
-    echo "ERROR: "
-    echo "  Please accept the Wowza EULA by specifying 'WOWZA_ACCEPT_LICENSE=yes'"
-    echo "  Visit https://www.wowza.com/legal to read the Licensing Terms."
-    echo "  Aborting..."
-    exit 1
-  fi
   exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
 else
   exec "$@"
