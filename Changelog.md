@@ -1,5 +1,8 @@
 # Changelog
 
+**4.4.1**
+- wowza: upgrade to 4.4.1
+
 **4.3.0**
 - wowza: upgrade to 4.3.0
 
