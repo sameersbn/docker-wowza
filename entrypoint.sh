@@ -29,9 +29,12 @@ check_and_install_wowza() {
     exit 1
   fi
 
-  # install Wowza
+  # setting up licences
+  echo "${WOWZA_KEY}" > /usr/local/WowzaStreamingEngine/conf/Server.license
   sed -i "s/xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxxxxxxxxx/${WOWZA_KEY}/g" /app/interaction.exp
-  /app/interaction.exp > /dev/null
+
+  # install Wowza
+  /app/interaction.exp
 
   # symlink /usr/local/WowzaStreamingEngine/logs -> ${WOWZA_LOG_DIR}/wowza
   rm -rf /usr/local/WowzaStreamingEngine/logs
