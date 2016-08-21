@@ -1,4 +1,4 @@
-FROM sameersbn/ubuntu:14.04.20160727
+FROM sameersbn/ubuntu:14.04.20160817
 MAINTAINER sameer@damagehead.com
 
 ENV WOWZA_VERSION=4.3.0 \
