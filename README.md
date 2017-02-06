@@ -79,12 +79,14 @@ docker run --name wowza -d --restart=always \
   --publish 8087:8087 --publish 8088:8088 \
   --env 'WOWZA_ACCEPT_LICENSE=yes' \
   --env 'WOWZA_KEY=xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx' \
+  --env 'WOWZA_VERSION=4.4.1' \
   --volume /srv/docker/wowza/data:/var/lib/wowza \
   --volume /srv/docker/wowza/log:/var/log/wowza \
-  sameersbn/wowza:4.1.2-8
+  sameersbn/wowza:current
 ```
 
 **The `--env WOWZA_ACCEPT_LICENSE=yes` parameter in the above command indicates that you agree to the Wowza EULA.**
+**The `--env WOWZA_VERSION=4.4.1` parameter would cause the version in :current to be upgraded to 4.4.1. 4.4.1 is just an example and you should find the most recent version at https://www.wowza.com/pricing/installer. **
 
 *Alternatively, you can use the sample [docker-compose.yml](docker-compose.yml) file to start the container using [Docker Compose](https://docs.docker.com/compose/)*
 
